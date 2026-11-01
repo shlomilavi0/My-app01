@@ -1,0 +1,3 @@
+self.addEventListener("push",event=>{let data={title:"זמן לאימון 💪",body:"האימון שלך מחכה לך",url:"/"};try{data={...data,...event.data.json()}}catch{};event.waitUntil(self.registration.showNotification(data.title,{body:data.body,icon:"/icon.svg",data:{url:data.url},vibrate:[150,80,150]}))});
+self.addEventListener("notificationclick",event=>{event.notification.close();event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list=>{for(const c of list){if("focus"in c)return c.focus()}return clients.openWindow(event.notification.data?.url||"/")}))});
+self.addEventListener("install",e=>self.skipWaiting());self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));
